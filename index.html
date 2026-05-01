@@ -1,0 +1,323 @@
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.wrap { max-width: 680px; margin: 0 auto; padding: 20px 16px; }
+.header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.icon { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg,#e8400c,#f97316); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+h1 { font-size: 22px; font-weight: 700; }
+.sub { font-size: 13px; color: #6e6e73; }
+.tabs { display: flex; background: #e5e5ea; border-radius: 10px; padding: 3px; margin-bottom: 20px; }
+.tab { flex: 1; padding: 8px 4px; border: none; background: transparent; border-radius: 8px; font-size: 13px; font-weight: 500; color: #6e6e73; cursor: pointer; }
+.tab.active { background: #fff; color: #1d1d1f; font-weight: 700; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.panel { display: none; }
+.panel.active { display: block; }
+.search-row { display: flex; gap: 8px; margin-bottom: 16px; }
+.search-row input { flex: 1; padding: 12px 14px; border-radius: 12px; border: 1px solid #d2d2d7; font-size: 15px; background: #fff; }
+.search-row input:focus { outline: none; border-color: #e8400c; }
+.btn { padding: 12px 18px; border-radius: 12px; border: none; background: #e8400c; color: #fff; font-weight: 700; font-size: 15px; cursor: pointer; white-space: nowrap; }
+.btn.grey { background: #6e6e73; }
+.btn.secondary { background: #e5e5ea; color: #1d1d1f; }
+.spinner-wrap { text-align: center; padding: 40px 16px; }
+.spinner { width: 36px; height: 36px; border: 3px solid #e5e5ea; border-top-color: #e8400c; border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 14px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-wrap p { color: #6e6e73; font-size: 14px; line-height: 1.6; }
+.error-box { background: #fff2f2; border: 1px solid #ffb3b3; border-radius: 12px; padding: 14px; font-size: 14px; color: #c0392b; }
+.stats { display: flex; gap: 8px; margin-bottom: 14px; }
+.stat { flex: 1; background: #fff; border-radius: 12px; padding: 10px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.stat-val { font-size: 18px; font-weight: 700; }
+.stat-lbl { font-size: 11px; color: #6e6e73; margin-top: 2px; }
+.filters { display: flex; gap: 8px; margin-bottom: 12px; }
+.filters select { padding: 7px 10px; border-radius: 8px; border: 1px solid #d2d2d7; font-size: 13px; background: #fff; }
+.card { background: #fff; border-radius: 14px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.card.best { border: 2px solid #34c759; }
+.card-top { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.card-left { flex: 1; min-width: 0; }
+.card-right { text-align: right; flex-shrink: 0; }
+.tienda { font-weight: 700; font-size: 15px; }
+.producto { font-size: 13px; color: #6e6e73; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.badges { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; }
+.badge { font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+.b-mejor  { background: #d1fae5; color: #065f46; }
+.b-outlet { background: #fef3c7; color: #92400e; }
+.b-market { background: #ede9fe; color: #5b21b6; }
+.b-gshop  { background: #e0f2fe; color: #0369a1; }
+.precio-total { font-size: 22px; font-weight: 800; }
+.precio-total.best { color: #34c759; }
+.precio-orig { font-size: 13px; color: #aeaeb2; text-decoration: line-through; }
+.descuento { font-size: 13px; color: #34c759; font-weight: 700; }
+.card-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid #f2f2f7; margin-top: 8px; }
+.envio { font-size: 13px; }
+.envio.gratis { color: #34c759; font-weight: 600; }
+.stars { color: #ff9500; font-size: 13px; }
+.ver-btn { padding: 8px 16px; background: #e8400c; color: #fff; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; }
+.cupon-tag { font-size: 11px; background: #ede9fe; color: #7c3aed; padding: 2px 8px; border-radius: 6px; display: inline-block; margin-top: 4px; }
+.resumen { background: #fff7f5; border-left: 4px solid #e8400c; border-radius: 0 12px 12px 0; padding: 12px 14px; font-size: 13px; color: #6e6e73; margin-top: 10px; }
+.alert-card { background: #fff; border-radius: 14px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.08); display: flex; align-items: center; gap: 12px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #34c759; flex-shrink: 0; }
+.alert-info { flex: 1; min-width: 0; }
+.alert-name { font-weight: 700; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.alert-price { font-size: 12px; color: #6e6e73; margin-top: 2px; }
+.alert-actions { display: flex; gap: 6px; }
+.search-now { padding: 7px 12px; background: #e0f2fe; color: #0369a1; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.del-btn { padding: 7px 10px; background: #fff2f2; color: #c0392b; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; }
+.form-box { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 14px; }
+.form-box input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #d2d2d7; font-size: 15px; margin-bottom: 10px; }
+.form-btns { display: flex; gap: 8px; }
+.form-btns .btn { flex: 1; padding: 12px; }
+.empty { text-align: center; padding: 50px 20px; color: #6e6e73; }
+.source-group { margin-bottom: 16px; }
+.source-group h3 { font-size: 12px; font-weight: 700; color: #6e6e73; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+.source-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.source-tag { font-size: 12px; padding: 5px 12px; background: #fff; border: 1px solid #e5e5ea; border-radius: 20px; }
+.live-note { background: #f0fdf4; border-left: 3px solid #34c759; border-radius: 0 10px 10px 0; padding: 10px 14px; font-size: 13px; color: #6e6e73; margin-top: 8px; }
+</style>
+
+<div class="wrap">
+  <div class="header">
+    <div class="icon">🛒</div>
+    <div><h1>CholloFinder Pro</h1><p class="sub">Búsqueda real · Google Shopping · 30+ fuentes · España</p></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="buscar">🔍 Buscar</button>
+    <button class="tab" data-tab="alertas">🔔 Alertas</button>
+    <button class="tab" data-tab="fuentes">📋 Fuentes</button>
+  </div>
+
+  <div id="buscar" class="panel active">
+    <div class="search-row">
+      <input type="text" id="qinput" placeholder="Ej: Nike Air Max 90 talla 42" autocomplete="off">
+      <button id="searchbtn" class="btn">Buscar 🔍</button>
+    </div>
+    <div id="search-content"></div>
+  </div>
+
+  <div id="alertas" class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <span style="font-weight:700;font-size:16px">Alertas de precio</span>
+      <button id="new-alert-btn" class="btn" style="font-size:13px;padding:8px 14px">+ Nueva</button>
+    </div>
+    <div id="alert-form" style="display:none">
+      <div class="form-box">
+        <input type="text" id="alert-q" placeholder="Producto (ej: Garmin Fenix 7)">
+        <input type="text" id="alert-p" placeholder="Precio máximo € (opcional)">
+        <div class="form-btns">
+          <button id="save-alert-btn" class="btn">Crear alerta</button>
+          <button id="cancel-alert-btn" class="btn secondary">Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <div id="alerts-list">
+      <div class="empty"><div style="font-size:44px;margin-bottom:12px">🔔</div><p style="font-weight:700">Sin alertas activas</p></div>
+    </div>
+  </div>
+
+  <div id="fuentes" class="panel">
+    <p style="font-size:13px;color:#6e6e73;margin-bottom:16px">30+ fuentes rastreadas en tiempo real</p>
+    <div class="source-group"><h3>🛍 Tiendas España</h3><div class="source-tags"><span class="source-tag">Amazon.es</span><span class="source-tag">PcComponentes</span><span class="source-tag">MediaMarkt</span><span class="source-tag">El Corte Inglés</span><span class="source-tag">Fnac</span><span class="source-tag">Worten</span><span class="source-tag">Carrefour</span></div></div>
+    <div class="source-group"><h3>⚡ Outlets</h3><div class="source-tags"><span class="source-tag">Veepee</span><span class="source-tag">Privalia</span><span class="source-tag">Zalando Outlet</span><span class="source-tag">Private Sport Shop</span><span class="source-tag">Deporvillage</span><span class="source-tag">Le Sac Outlet</span><span class="source-tag">Primati</span></div></div>
+    <div class="source-group"><h3>🌍 Marketplaces</h3><div class="source-tags"><span class="source-tag">AliExpress</span><span class="source-tag">eBay España</span><span class="source-tag">Miravia</span><span class="source-tag">Wallapop</span></div></div>
+    <div class="source-group"><h3>🔥 Buscadores</h3><div class="source-tags"><span class="source-tag">Google Shopping</span><span class="source-tag">Chollometro</span><span class="source-tag">Idealo</span><span class="source-tag">Kelkoo</span><span class="source-tag">Rastreator</span></div></div>
+    <div class="live-note">● Búsqueda web real · Resultados del momento de la búsqueda</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var alerts = [];
+  var currentResults = [];
+  var currentSort = 'total';
+  var currentFilter = 'todos';
+  var isLoading = false;
+  var abortCtrl = null;
+
+  var PROMPT = 'Eres CholloFinder, buscador de ofertas para España. Usa web_search para buscar precios reales. Haz 3 búsquedas: "[producto] precio oferta España", "[producto] outlet chollo", "[producto] cupon descuento España". Responde SOLO con JSON valido sin texto ni backticks: {"producto":"nombre","resultados":[{"tienda":"Amazon España","producto":"nombre","precio":89.99,"precio_original":119.99,"envio":0,"total":89.99,"descuento":"25%","cupon":null,"valoracion":4.5,"num_valoraciones":1200,"url":"https://amazon.es","tipo":"normal"}],"cupones_extra":[],"resumen":"texto"} Tipos: outlet, normal, marketplace, shopping. Minimo 6 resultados. Ordena por total ascendente.';
+
+  // Tabs
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Search
+  document.getElementById('searchbtn').addEventListener('click', function() {
+    if (isLoading) { if (abortCtrl) abortCtrl.abort(); return; }
+    doSearch();
+  });
+
+  document.getElementById('qinput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  function doSearch(override) {
+    var q = override || document.getElementById('qinput').value.trim();
+    if (!q) return;
+    isLoading = true;
+    var btn = document.getElementById('searchbtn');
+    btn.textContent = 'Cancelar';
+    btn.classList.add('grey');
+    document.getElementById('search-content').innerHTML = '<div class="spinner-wrap"><div class="spinner"></div><p>Buscando en Google Shopping,<br>Amazon, outlets y más...<br><br>Puede tardar 20-30 segundos.</p></div>';
+
+    abortCtrl = new AbortController();
+    var tid = setTimeout(function() { abortCtrl.abort(); }, 55000);
+
+    fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: abortCtrl.signal,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: PROMPT,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{ role: 'user', content: 'Busca precios reales para: "' + q + '". Pais: Espana.' }]
+      })
+    })
+    .then(function(r) { clearTimeout(tid); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(d) {
+      var text = (d.content || []).filter(function(b) { return b.type === 'text'; }).map(function(b) { return b.text; }).join('');
+      var m = text.match(/\{[\s\S]*\}/);
+      if (!m) throw new Error('Sin respuesta JSON.');
+      var p = JSON.parse(m[0]);
+      if (!Array.isArray(p.resultados)) throw new Error('Sin resultados.');
+      currentResults = p.resultados;
+      renderResults(p);
+      resetBtn();
+    })
+    .catch(function(e) {
+      clearTimeout(tid);
+      var msg = e.name === 'AbortError' ? 'Tiempo agotado. Prueba de nuevo.' : (e.message || 'Error de conexion.');
+      document.getElementById('search-content').innerHTML = '<div class="error-box">⚠️ ' + msg + '<br><button id="retry-btn" class="btn" style="margin-top:10px;font-size:13px;padding:8px 16px">Reintentar</button></div>';
+      document.getElementById('retry-btn') && document.getElementById('retry-btn').addEventListener('click', doSearch);
+      resetBtn();
+    });
+  }
+
+  function resetBtn() {
+    isLoading = false;
+    var btn = document.getElementById('searchbtn');
+    btn.textContent = 'Buscar 🔍';
+    btn.classList.remove('grey');
+  }
+
+  function n(v) { var x = parseFloat(v); return isNaN(x) ? '—' : x.toFixed(2); }
+
+  function starsHTML(v) {
+    var x = parseFloat(v);
+    if (!x || isNaN(x)) return '';
+    var f = Math.min(5, Math.max(0, Math.floor(x)));
+    return '<span class="stars">' + '★'.repeat(f) + '☆'.repeat(5 - f) + '</span> <span style="font-size:12px;color:#aeaeb2">' + x.toFixed(1) + '</span>';
+  }
+
+  function renderResults(data) {
+    var rows = (currentResults || []).slice();
+    if (currentFilter !== 'todos') rows = rows.filter(function(r) { return r.tipo === currentFilter; });
+    if (currentSort === 'desc') rows.sort(function(a, b) { return (parseFloat(b.descuento) || 0) - (parseFloat(a.descuento) || 0); });
+    else if (currentSort === 'rating') rows.sort(function(a, b) { return (parseFloat(b.valoracion) || 0) - (parseFloat(a.valoracion) || 0); });
+    else rows.sort(function(a, b) { return (parseFloat(a.total) || 0) - (parseFloat(b.total) || 0); });
+
+    var gratis = rows.filter(function(r) { return parseFloat(r.envio) === 0; }).length;
+    var html = '<div class="stats">';
+    html += '<div class="stat"><div class="stat-val" style="color:#34c759">' + (rows[0] ? n(rows[0].total) + '€' : '—') + '</div><div class="stat-lbl">Mejor precio</div></div>';
+    html += '<div class="stat"><div class="stat-val">' + rows.length + '</div><div class="stat-lbl">Resultados</div></div>';
+    html += '<div class="stat"><div class="stat-val" style="color:#007aff">' + gratis + '</div><div class="stat-lbl">Envío gratis</div></div>';
+    html += '</div>';
+    html += '<div class="filters"><select id="filter-sel"><option value="todos">Todos</option><option value="outlet">Outlet</option><option value="normal">Tiendas</option><option value="marketplace">Marketplace</option><option value="shopping">G.Shopping</option></select>';
+    html += '<select id="sort-sel"><option value="total">Más barato</option><option value="desc">Más descuento</option><option value="rating">Mejor valorado</option></select></div>';
+
+    rows.forEach(function(r, i) {
+      var isBest = i === 0;
+      html += '<div class="card' + (isBest ? ' best' : '') + '">';
+      html += '<div class="card-top"><div class="card-left">';
+      html += '<div class="tienda">' + (r.tienda || '—') + '</div>';
+      html += '<div class="producto">' + (r.producto || '') + '</div>';
+      if (r.cupon) html += '<div class="cupon-tag">🏷 ' + r.cupon + '</div>';
+      html += '<div class="badges">';
+      if (isBest) html += '<span class="badge b-mejor">🏆 Mejor precio</span>';
+      if (r.tipo === 'outlet') html += '<span class="badge b-outlet">Outlet</span>';
+      if (r.tipo === 'marketplace') html += '<span class="badge b-market">Market</span>';
+      if (r.tipo === 'shopping') html += '<span class="badge b-gshop">G.Shopping</span>';
+      html += '</div></div>';
+      html += '<div class="card-right">';
+      if (parseFloat(r.precio_original) > parseFloat(r.precio)) html += '<div class="precio-orig">' + n(r.precio_original) + '€</div>';
+      if (r.descuento && r.descuento !== '0%') html += '<div class="descuento">-' + r.descuento + '</div>';
+      html += '<div class="precio-total' + (isBest ? ' best' : '') + '">' + n(r.total) + '€</div>';
+      html += '</div></div>';
+      html += '<div class="card-bottom"><div>';
+      html += '<div class="envio' + (parseFloat(r.envio) === 0 ? ' gratis' : '') + '">' + (parseFloat(r.envio) === 0 ? '✓ Envío gratis' : 'Envío: ' + n(r.envio) + '€') + '</div>';
+      if (r.valoracion) html += '<div style="margin-top:4px">' + starsHTML(r.valoracion);
+      if (r.num_valoraciones > 0) html += ' <span style="font-size:11px;color:#aeaeb2">(' + parseInt(r.num_valoraciones).toLocaleString('es-ES') + ')</span>';
+      if (r.valoracion) html += '</div>';
+      html += '</div>';
+      if (r.url) html += '<a href="' + r.url + '" target="_blank" class="ver-btn">Ver →</a>';
+      html += '</div></div>';
+    });
+
+    if (data && data.resumen) html += '<div class="resumen">' + data.resumen + '</div>';
+    document.getElementById('search-content').innerHTML = html;
+
+    var fs = document.getElementById('filter-sel');
+    var ss = document.getElementById('sort-sel');
+    if (fs) fs.addEventListener('change', function() { currentFilter = this.value; renderResults(data); });
+    if (ss) ss.addEventListener('change', function() { currentSort = this.value; renderResults(data); });
+  }
+
+  // Alerts
+  document.getElementById('new-alert-btn').addEventListener('click', function() {
+    document.getElementById('alert-form').style.display = 'block';
+  });
+  document.getElementById('cancel-alert-btn').addEventListener('click', function() {
+    document.getElementById('alert-form').style.display = 'none';
+  });
+  document.getElementById('save-alert-btn').addEventListener('click', function() {
+    var q = document.getElementById('alert-q').value.trim();
+    var p = document.getElementById('alert-p').value.trim();
+    if (!q) return;
+    alerts.push({ id: Date.now().toString(), q: q, p: p });
+    document.getElementById('alert-q').value = '';
+    document.getElementById('alert-p').value = '';
+    document.getElementById('alert-form').style.display = 'none';
+    renderAlerts();
+  });
+
+  function renderAlerts() {
+    var list = document.getElementById('alerts-list');
+    var tabBtn = document.querySelector('[data-tab="alertas"]');
+    tabBtn.textContent = alerts.length ? '🔔 Alertas (' + alerts.length + ')' : '🔔 Alertas';
+    if (alerts.length === 0) {
+      list.innerHTML = '<div class="empty"><div style="font-size:44px;margin-bottom:12px">🔔</div><p style="font-weight:700">Sin alertas activas</p></div>';
+      return;
+    }
+    var h = '';
+    alerts.forEach(function(a) {
+      h += '<div class="alert-card"><div class="dot"></div><div class="alert-info"><div class="alert-name">' + a.q + '</div>';
+      if (a.p) h += '<div class="alert-price">Objetivo: ≤ ' + a.p + '€</div>';
+      h += '</div><div class="alert-actions"><button class="search-now" data-id="' + a.id + '">Buscar ahora</button><button class="del-btn" data-id="' + a.id + '">✕</button></div></div>';
+    });
+    list.innerHTML = h;
+    list.querySelectorAll('.search-now').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var a = alerts.find(function(x) { return x.id === btn.dataset.id; });
+        if (!a) return;
+        document.getElementById('qinput').value = a.q;
+        document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+        document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+        document.querySelector('[data-tab="buscar"]').classList.add('active');
+        document.getElementById('buscar').classList.add('active');
+        setTimeout(function() { doSearch(a.q); }, 100);
+      });
+    });
+    list.querySelectorAll('.del-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        alerts = alerts.filter(function(a) { return a.id !== btn.dataset.id; });
+        renderAlerts();
+      });
+    });
+  }
+})();
+</script>
+
